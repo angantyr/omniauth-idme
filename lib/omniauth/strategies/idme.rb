@@ -29,7 +29,7 @@ module OmniAuth
       end
 
       def data
-        @data ||= access_token.get("/api/public/v2/attributes.json").parsed
+        @data ||= access_token.get("/api/public/v3/attributes.json").parsed
       end
 
       def headers
