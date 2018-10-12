@@ -15,21 +15,36 @@ module OmniAuth
 
       option :authorize_options, [:scope, :display]
 
-      uid { data["id"] }
+      uid { attributes['uuid'] }
 
       info do
         {
-          :affiliation  => data["affiliation"],
-          :verified     => data["verified"]
+          name:       [attributes['fname'],attributes['lname']].join(' '),
+          email:      attributes['email'],
+          first_name: attributes['fname'],
+          last_name:  attributes['lname'],
+          location:   attributes['zip']
         }
       end
 
       extra do
-        { :raw => data }
+        {
+          group:      data['status'].first['group'],
+          subgroup:   data['status'].first['subgroups'].first,
+          branch:     attributes['military_member_branch'] || attributes['military_branch'],
+          uuid:       attributes['uuid'],
+          verfied:    data['status'].first['verified'],
+          raw_info:   data
+        }
       end
 
       def data
         @data ||= access_token.get("/api/public/v3/attributes.json").parsed
+        # debugger
+      end
+
+      def attributes
+        data['attributes'].map {|t| [t['handle'],t['value']]}.to_h
       end
 
       def headers
