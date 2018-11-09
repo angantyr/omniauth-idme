@@ -23,7 +23,8 @@ module OmniAuth
           email:      attributes['email'],
           first_name: attributes['fname'],
           last_name:  attributes['lname'],
-          location:   attributes['zip']
+          location:   attributes['zip'],
+          birth_date: attributes['birth_date']
         }
       end
 
